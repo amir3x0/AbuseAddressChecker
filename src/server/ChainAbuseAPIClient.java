@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 
 public class ChainAbuseAPIClient {
     private static ChainAbuseAPIClient instance;
-    private static final String API_KEY = "your_api_key_here";
-    private static final String API_URL = "https://api.chainabuse.com/v1/reports";
+    private static final String API_KEY = "ca_U1ljUkFuT2FNd21NZFJFdDZkYTNCMEdsLjRvc0xOWkFHYll6YiszNlUzaE9VeXc9PQ";
+    private static final String API_URL = "https://api.chainabuse.com/v0/reports";
 
     private ChainAbuseAPIClient() {}
 
@@ -23,10 +23,14 @@ public class ChainAbuseAPIClient {
     }
 
     public List<Report> checkAddress(String address) throws Exception {
+    	
+    	//String endpoint = API_URL + "?address=" + address + "&includePrivate=false";
+    	
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + "?address=" + address))
-                .header("X-API-Key", API_KEY)
+                .header("Authorization", "Bearer " + API_KEY)
+                .header("accept", "application/json")
                 .GET()
                 .build();
 
