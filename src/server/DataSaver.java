@@ -1,15 +1,13 @@
 package server;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 
 public class DataSaver {
-    // שמור ל-log.txt
+
+    // Save to log.txt
     public void saveToLog(List<Report> reports) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter("log.txt", true))) {
             for (Report r : reports) {
@@ -18,22 +16,17 @@ public class DataSaver {
         }
     }
 
-    // שמור לאקסל
+    // "Export to Excel" but actually create a CSV file for simplicity
     public void saveToExcel(List<Report> reports, String filePath) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Reports");
+        // We'll generate CSV content here
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            // Optionally write a header row:
+            writer.println("Address,AbuseCount,ReportLink");
 
-        int rowNum = 0;
-        for (Report r : reports) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(r.getAddress());
-            row.createCell(1).setCellValue(r.getAbuseCount());
-            row.createCell(2).setCellValue(r.getReportLink());
+            // Write the data rows:
+            for (Report r : reports) {
+                writer.println(r.getAddress() + "," + r.getAbuseCount() + "," + r.getReportLink());
+            }
         }
-
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            workbook.write(outputStream);
-        }
-        workbook.close();
     }
 }

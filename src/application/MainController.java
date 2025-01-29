@@ -108,13 +108,15 @@ public class MainController {
     @FXML
     private void handleExportExcel() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        // Change the extension filter to CSV
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             facade.saveToExcel(resultsTable.getItems(), file.getPath());
-            addLogEntry("Exported to Excel: " + file.getName());
+            addLogEntry("Exported to CSV: " + file.getName());
         }
     }
+
 
     private void addLogEntry(String message) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss"));
