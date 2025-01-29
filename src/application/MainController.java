@@ -25,28 +25,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        loadLogFromFile();
-        // אופציונלי: הגדרת Row Factory כדי לצבוע שורות
-        /*
-        resultsTable.setRowFactory(tv -> new TableRow<Report>() {
-            @Override
-            protected void updateItem(Report item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setStyle("");
-                } else {
-                    int count = item.getAbuseCount();
-                    if (count > 10) {
-                        setStyle("-fx-background-color: #ffcccc;");
-                    } else if (count > 0) {
-                        setStyle("-fx-background-color: #fff3cc;");
-                    } else {
-                        setStyle("");
-                    }
-                }
-            }
-        });
-        */
+        loadLogFromFile();      
     }
 
     private void loadLogFromFile() {
