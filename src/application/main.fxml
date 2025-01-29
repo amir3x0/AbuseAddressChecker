@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="application.MainController"
+            style="-fx-padding: 20;">
+
+    <!-- Top Section - Address Input -->
+    <top>
+        <VBox spacing="10">
+            <Label text="Abuse Address Checker" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Address To Check:" style="-fx-font-weight: bold;"/>
+                <Button text="Add new address" onAction="#handleAddAddress"/>
+                <Button text="Upload file" onAction="#handleFileUpload"/>
+            </HBox>
+
+            <TextArea fx:id="addressInput" promptText="Paste addresses here..." 
+                    prefRowCount="5" style="-fx-font-family: monospace;"/>
+        </VBox>
+    </top>
+
+    <!-- Center Section - Results Table -->
+    <center>
+        <TableView fx:id="resultsTable" style="-fx-margin: 20 0;">
+            <columns>
+                <TableColumn text="Address" prefWidth="300">
+                    <cellValueFactory><PropertyValueFactory property="address"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="# of abuses" prefWidth="100">
+                    <cellValueFactory><PropertyValueFactory property="abuseCount"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Link" prefWidth="250">
+                    <cellValueFactory><PropertyValueFactory property="reportLink"/></cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- Bottom Section - Log & Actions -->
+    <bottom>
+        <VBox spacing="10">
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Clear Table" onAction="#handleClearTable" style="-fx-background-color: #ff4444; -fx-text-fill: white;"/>
+                <Button text="Export to Excel" onAction="#handleExportExcel"/>
+            </HBox>
+            
+            <Label text="Log:" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="logList" prefHeight="100"/>
+        </VBox>
+    </bottom>
+
+</BorderPane>

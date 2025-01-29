@@ -1,0 +1,17 @@
+<!-- הוסף קובץ CSS נפרד או inline styling -->
+<style>
+    .abuse-high {
+        -fx-background-color: #ffcccc;
+    }
+    .abuse-medium {
+        -fx-background-color: #fff3cc;
+    }
+    
+</style>
+
+.table-row-cell:abuse-high {
+    -fx-background-color: #ffcccc;
+}
+.table-row-cell:abuse-medium {
+    -fx-background-color: #fff3cc;
+}
