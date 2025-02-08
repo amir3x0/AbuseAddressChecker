@@ -1,32 +1,39 @@
+// FraudDetectionFacade.java
 package server;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.io.IOException;
 
 public class FraudDetectionFacade {
     private ChainAbuseAPIClient apiClient = ChainAbuseAPIClient.getInstance();
     private AddressValidator validator = new AddressValidator();
     private DataSaver dataSaver = new DataSaver();
 
-    public List<Report> scanAddresses(List<String> addresses) throws Exception{
-        List<Report> reports = new ArrayList<>();
+    public List<Report> scanAddresses(List<String> addresses) throws Exception {
+        List<Report> allReports = new ArrayList<>();
         for (String addr : addresses) {
-            if (validator.isValid(addr)) {
-                reports.addAll(apiClient.checkAddress(addr));  // throws Exception
+            addr = addr.trim();
+            if (!addr.isEmpty()) {
+                allReports.addAll(scanAddress(addr));
             }
         }
-        dataSaver.saveToLog(reports); // throws IOException, אבל IOException יורש מ-Exception
-        return reports;
+        dataSaver.saveToLog(allReports);
+        return allReports;
     }
 
+    public List<Report> scanAddress(String address) throws Exception {
+        if (!validator.isValid(address)) {
+            throw new IllegalArgumentException("Invalid address format");
+        }
+        return apiClient.checkAddress(address);
+    }
 
-    public void saveToExcel(List<Report> reports, String path) {
-        try {
-			dataSaver.saveToExcel(reports, path);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public boolean isValidAddress(String address) {
+        return validator.isValid(address);
+    }
+
+    public void saveToExcel(List<Report> reports, String path) throws IOException {
+        dataSaver.saveToExcel(reports, path);
     }
 }

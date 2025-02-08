@@ -17,15 +17,19 @@ public class DataSaver {
     }
 
     // "Export to Excel" but actually create a CSV file for simplicity
+ // DataSaver.java
     public void saveToExcel(List<Report> reports, String filePath) throws IOException {
-        // We'll generate CSV content here
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            // Optionally write a header row:
-            writer.println("Address,AbuseCount,ReportLink");
-
-            // Write the data rows:
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println("Address,Status,Abuse Count,Report Link");
             for (Report r : reports) {
-                writer.println(r.getAddress() + "," + r.getAbuseCount() + "," + r.getReportLink());
+                String status = r.getAbuseCount() > 0 ? "Suspicious" : 
+                              r.getAbuseCount() == -1 ? "Error" : "Clean";
+                writer.println(String.join(",",
+                    r.getAddress(),
+                    status,
+                    String.valueOf(r.getAbuseCount()),
+                    r.getReportLink()
+                ));
             }
         }
     }

@@ -38,6 +38,9 @@
                 <TableColumn text="Link" prefWidth="250">
                     <cellValueFactory><PropertyValueFactory property="reportLink"/></cellValueFactory>
                 </TableColumn>
+                <TableColumn text="Status" prefWidth="150">
+    				<cellValueFactory><PropertyValueFactory property="status"/></cellValueFactory>
+				</TableColumn>
             </columns>
         </TableView>
     </center>

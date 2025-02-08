@@ -24,5 +24,19 @@ public class Report {
     // Standard getters
     public String getAddress() { return address.get(); }
     public int getAbuseCount() { return abuseCount.get(); }
-    public String getReportLink() { return reportLink.get(); }
+    public String getReportLink() {
+        if (reportLink.get().startsWith("http")) {
+            return reportLink.get();
+        } else {
+            return "No report available";
+        }
+    }
+    
+    @Override
+    public String toString() {
+        if (abuseCount.get() == 0) return "Clean address";
+        if (abuseCount.get() == -1) return "Error occurred";
+        return "Suspicious activity detected";
+    }
+
 }

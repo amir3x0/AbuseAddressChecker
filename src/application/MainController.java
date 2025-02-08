@@ -49,13 +49,38 @@ public class MainController {
     }
 
     private void processAddresses(List<String> addresses) {
-        try {
-            List<Report> results = facade.scanAddresses(addresses);
-            resultsTable.getItems().addAll(results);
-            addLogEntry("Scanned " + addresses.size() + " addresses, found " + results.size() + " suspicious addresses.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            addLogEntry("Error scanning addresses: " + e.getMessage());
+        for (String address : addresses) {
+            String addr = address.trim(); // יצירת עותק מקומי
+            if (addr.isEmpty()) continue;
+            
+            try {
+                if (facade.isValidAddress(addr)) {
+                    addLogEntry("Checking address: " + addr);
+                    List<Report> reports = facade.scanAddress(addr);
+                    
+                    if (reports.isEmpty()) {
+                        addLogEntry("No data found for: " + addr);
+                        resultsTable.getItems().add(new Report(addr, 0, "No abuse reports"));
+                    } else {
+                        resultsTable.getItems().addAll(reports);
+                        // שימוש במשתנה final בתוך הלמבדה
+                        final String finalAddr = addr;
+                        reports.forEach(report -> {
+                            if (report.getAbuseCount() > 0) {
+                                addLogEntry("Found " + report.getAbuseCount() + " abuses for: " + finalAddr);
+                            } else {
+                                addLogEntry("No abuse found for: " + finalAddr); 
+                            }
+                        });
+                    }
+                } else {
+                    addLogEntry("Invalid address format: " + addr);
+                    resultsTable.getItems().add(new Report(addr, -1, "Invalid address"));
+                }
+            } catch (Exception e) {
+                addLogEntry("API error for " + addr + ": " + e.getMessage());
+                resultsTable.getItems().add(new Report(addr, -1, "Error: " + e.getMessage()));
+            }
         }
     }
 
@@ -85,7 +110,7 @@ public class MainController {
     }
 
     @FXML
-    private void handleExportExcel() {
+    private void handleExportExcel() throws IOException {
         FileChooser fileChooser = new FileChooser();
         // Change the extension filter to CSV
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
