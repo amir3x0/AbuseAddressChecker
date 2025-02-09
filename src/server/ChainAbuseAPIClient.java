@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 public class ChainAbuseAPIClient {
     private static ChainAbuseAPIClient instance;
     private static final String CHAINABUSE_URL = "https://api.chainabuse.com/v0/reports?includePrivate=false&page=1&perPage=50";
-    private static final String AUTH_HEADER_VALUE = "Basic Y2FfTjFkUWJqZFBhVkJGY1RKdFUxQnFSM0UyTW5BeFVrcE9Mbk5zWVdsWlZsUlZUR3RZY1M5MGJHVm9hMVpDYzFFOVBROmNhX04xZFFiamRQYVZCRmNUSnRVMUJxUjNFMk1uQXhVa3BPTG5Oc1lXbFpWbFJWVEd0WWNTOTBiR1ZvYTFaQ2MxRTlQUQ==";
+    private static final String AUTH_HEADER_VALUE = "Basic Y2FfYVRCRVFrRTVVRmhvYVZsWmNGZGxSMGxxYWtvM1RrVmFMbXAyVEhkSVYyNVJObVEyUjNKUmVsVmtjRk5pYjFFOVBROmNhX2FUQkVRa0U1VUZob2FWbFpjRmRsUjBscWFrbzNUa1ZhTG1wMlRIZElWMjVSTm1RMlIzSlJlbFZrY0ZOaWIxRTlQUQ==";
 
     private ChainAbuseAPIClient() {}
 
@@ -38,7 +38,7 @@ public class ChainAbuseAPIClient {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+        System.out.println(response.body());
         if (response.statusCode() == 200) {
             return parseResponse(response.body(), originalAddress);
         } else {
